@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+OPTIONS=
+if [ -d "$GIT_DIR" ]; then
+    OPTIONS="--no-progress "
+fi
+
+cd $(dirname $BASH_SOURCE[0])/..
+
+APP_ENV=testing ./vendor/bin/phpstan analyse --memory-limit=1G $OPTIONS -l 7 -c ./phpstan.neon ${@:-app}

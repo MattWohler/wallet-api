@@ -1,0 +1,16 @@
+{
+  "status": 200,
+  "response": {
+    "data": {
+      "type": "figure",
+      "attributes": {
+        "account": "123456",
+        "startDate": "2018-01-01 00:00:00",
+        "endDate": "2018-02-02 00:00:00",
+        "loseAmount": 501.67,
+        "winAmount": 2501.67,
+        "currency": "USD"
+      }
+    }
+  }
+}

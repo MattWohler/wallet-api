@@ -1,0 +1,49 @@
+{
+  "status": 200,
+  "response": {
+    "data": [
+      {
+        "type": "player",
+        "id": "12",
+        "attributes": {
+          "account": "MB1001",
+          "title": "Ms",
+          "firstName": "Jane",
+          "lastName": "Doe",
+          "country": "USA",
+          "brand": "mybookie",
+          "brandId": 35,
+          "enable": {
+            "casino": true,
+            "cards": true,
+            "horses": true,
+            "sports": true
+          },
+          "test": true,
+          "currency": "USD"
+        }
+      },
+      {
+        "type": "player",
+        "id": "12",
+        "attributes": {
+          "account": "MB4017",
+          "title": "Ms",
+          "firstName": "Jane",
+          "lastName": "Doe",
+          "country": "USA",
+          "brand": "mybookie",
+          "brandId": 35,
+          "enable": {
+            "casino": true,
+            "cards": true,
+            "horses": true,
+            "sports": true
+          },
+          "test": true,
+          "currency": "USD"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+#!/usr/bin/env sh
+
+# script/setup: Set up local dependencies and database
+set -e
+
+cd "$(dirname "$0")/.."
+
+RED="\e[0;31m"
+BLUE="\e[0;34m"
+
+print_color() {
+    test -t 1 && /bin/echo -e "$1$2\e[m" || echo $2
+}
+
+if [ ! -f .env ]; then
+    print_color $BLUE "==> Initializing environment variables"
+    cp .env.example .env
+fi
+
+. ./.env
+
+if [ "${DB_CONNECTION}" != "mysql" ]; then
+    (>&2 print_color $RED "This script can only handle mysql connection, ${DB_CONNECTION} found")
+    exit 1
+fi
+
+if [ "${APP_ENV}" != "local" ]; then
+    (>&2 print_color $RED "This script is meant for local development only")
+    exit 1
+fi
+
+print_color $BLUE "==> Installing composer dependencies"
+composer install
+
+print_color $BLUE "==> Running wallet-api migrations"
+php artisan migrate
+
+print_color $BLUE "==> App is now ready to go!"

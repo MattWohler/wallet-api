@@ -1,0 +1,41 @@
+{
+  "status": 200,
+  "response": {
+    "data": [
+      {
+        "type": "transaction",
+        "id": "1531",
+        "attributes": {
+          "id": 1531,
+          "oldBalance": 1245.884,
+          "newBalance": 172209.2021,
+          "account": "MB4017",
+          "providerTransactionId": "153131",
+          "roundId": "2151",
+          "amount": 11839190,
+          "type": "bet",
+          "providerId": 1,
+          "providerGameId": "11fd31",
+          "createdAt": "2019-02-09 00:00:00"
+        }
+      },
+      {
+        "type": "transaction",
+        "id": "1136077190",
+        "attributes": {
+          "id": 1136077190,
+          "oldBalance": 124552.884,
+          "newBalance": 17260209.2021,
+          "account": "MB4017",
+          "providerTransactionId": "1531531",
+          "roundId": "21531",
+          "amount": 1183919690,
+          "type": "bet",
+          "providerId": 1,
+          "providerGameId": "11fd31",
+          "createdAt": "2019-02-01 00:00:00"
+        }
+      }
+    ]
+  }
+}

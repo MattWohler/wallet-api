@@ -1,0 +1,14 @@
+# App
+/vendor
+/.env
+/tests/test-database.sqlite
+/tests/test-database.sqlite-journal
+/dist
+
+# Homestead
+Homestead.json
+Homestead.yaml
+
+# PHPStorm
+/.idea
+/.phpstorm.meta.php

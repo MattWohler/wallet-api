@@ -1,0 +1,6 @@
+{
+  "status": 422,
+  "errors": [
+    "The end date must be a date after or equal to start date."
+  ]
+}

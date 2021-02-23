@@ -1,0 +1,29 @@
+{
+  "status": 200,
+  "response": {
+    "data": {
+      "type": "player",
+      "id": "12",
+      "attributes": {
+        "account": "123456",
+        "title": "Ms",
+        "firstName": "Jane",
+        "lastName": "Doe",
+        "country": "USA",
+        "brand": "mybookie",
+        "brandId": 35,
+        "balance": {
+          "amount": 2501.67,
+          "currency": "USD"
+        },
+        "enable": {
+          "casino": true,
+          "cards": true,
+          "horses": true,
+          "sports": true
+        },
+        "test": true
+      }
+    }
+  }
+}

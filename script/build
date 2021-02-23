@@ -1,0 +1,24 @@
+#!/usr/bin/env sh
+
+# script/build: Build release
+set -e
+
+cd "$(dirname "$0")/.."
+
+print_color() {
+    test -t 1 && /bin/echo -e "\e[0;34m$1\e[m" || echo $1
+}
+
+print_color "==> Install composer dependencies (no dev)"
+php $(which composer) install --optimize-autoloader --no-dev
+
+print_color "==> Creating production ready build..."
+rm -rf dist ; mkdir -p dist
+rsync --recursive --executability --copy-dirlinks --copy-links \
+    --exclude-from=build/build_exclude \
+    . ./dist
+
+print_color "==> Saving release version"
+echo ${TAG:-$(git rev-parse --short HEAD)} > ./dist/RELEASE
+
+print_color "==> Build '$(cat ./dist/RELEASE)' ready in $(pwd)/dist"

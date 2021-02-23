@@ -1,0 +1,17 @@
+{
+  "status": 200,
+  "response": {
+    "data": {
+      "type": "transaction",
+      "id": "12223",
+      "attributes": {
+        "type": "bet",
+        "account": "12345",
+        "amount": 46.5,
+        "previousBalance": 546.5,
+        "currentBalance": 500,
+        "currency": "USD"
+      }
+    }
+  }
+}

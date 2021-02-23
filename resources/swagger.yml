@@ -1,0 +1,868 @@
+swagger: '2.0'
+info:
+  description: Casino Wallet API
+  version: 0.1.0
+  title: Wallet API
+host: wallet.casino.test
+basePath: /api/v1
+tags:
+  - name: Others
+schemes:
+  - http
+paths:
+  /authenticate/{account}:
+    get:
+      tags:
+        - Endpoints
+      summary: Authenticate a player
+      description: 'Get the player info for an account'
+      operationId: authenticate
+      parameters:
+        - name: account
+          in: path
+          description: 'The account of the player'
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - status
+              - response
+            properties:
+              status:
+                type: integer
+                example: 200
+              response:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: '#/definitions/Player'
+  /player/{account}:
+    get:
+      tags:
+        - Endpoints
+      summary: Get a player information
+      description: 'Get the player info for an account'
+      operationId: getPlayer
+      parameters:
+        - name: account
+          in: path
+          description: 'The account of the player'
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - status
+              - response
+            properties:
+              status:
+                type: integer
+                example: 200
+              response:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: '#/definitions/PlayerInfo'
+  /player:
+    get:
+      tags:
+        - Endpoints
+      summary: Get players information by batch
+      description: 'Get the player info by batch'
+      operationId: getPlayerInfoByBatch
+      parameters:
+        - name: accounts
+          in: query
+          description: 'Account list of player'
+          required: true
+          type: array
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - status
+              - response
+            properties:
+              status:
+                type: integer
+                example: 200
+              response:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/definitions/PlayerInfo'
+        '422':
+          description: Invalid parameters supplied
+          schema:
+            $ref: '#/definitions/ValidationError'
+  /balance/{account}:
+    get:
+      tags:
+        - Endpoints
+      summary: Get Account Balance
+      description: 'Get the current balance for an account'
+      operationId: getBalance
+      parameters:
+        - name: account
+          in: path
+          description: 'The account of the user'
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - status
+              - response
+            properties:
+              status:
+                type: integer
+                example: 200
+              response:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: '#/definitions/Balance'
+  /figure/{account}:
+    get:
+      tags:
+        - Endpoints
+      summary: Get Figure By Date Range
+      description: 'Get the figure by date range for an account'
+      operationId: getFigure
+      parameters:
+        - name: account
+          in: path
+          description: 'The account of the user'
+          required: true
+          type: string
+        - name: startDate
+          in: query
+          description: 'The start date'
+          required: true
+          type: string
+          pattern: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$'
+        - name: endDate
+          in: query
+          description: 'The start date'
+          required: true
+          type: string
+          pattern: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - status
+              - response
+            properties:
+              status:
+                type: integer
+                example: 200
+              response:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: '#/definitions/Figure'
+        '422':
+          description: Invalid start/end date supplied
+          schema:
+            $ref: '#/definitions/ValidationError'
+  /transaction:
+    post:
+      tags:
+        - Endpoints
+      summary: Process Transaction
+      description: 'Process a transaction'
+      operationId: process
+      consumes:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          description: 'The request to process transaction'
+          required: true
+          schema:
+            type: object
+            required:
+              - account
+              - amount
+              - brandId
+              - providerId
+              - providerGameId
+              - providerTransactionId
+              - roundId
+              - reference
+              - currency
+              - type
+            properties:
+              account:
+                type: string
+                example: '132'
+              amount:
+                type: numeric
+                example: 45.56
+              brandId:
+                type: integer
+                example: 132
+              providerId:
+                type: integer
+                example: 132
+              providerGameId:
+                type: integer
+                example: 132
+              providerTransactionId:
+                type: string
+                example: '132'
+              roundId:
+                type: string
+                example: '132'
+              reference:
+                type: string
+                example: 'reference'
+              currency:
+                type: string
+                example: 'USD'
+              description:
+                type: string
+                example: 'description'
+              type:
+                type: string
+                example: 'bet'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - status
+              - response
+            properties:
+              status:
+                type: integer
+                example: 200
+              response:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: '#/definitions/Transaction'
+        '403':
+          description: Insufficient fund
+          schema:
+            $ref: '#/definitions/InsufficientFundError'
+        '409':
+          description: Duplicate transaction
+          schema:
+            $ref: '#/definitions/DuplicateError'
+        '422':
+          description: Invalid parameters supplied
+          schema:
+            $ref: '#/definitions/ValidationError'
+  /rollback:
+    post:
+      tags:
+        - Endpoints
+      summary: Rollback Transaction
+      description: 'Process a rollback'
+      operationId: rollback
+      consumes:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          description: 'The request to process rollback'
+          required: true
+          schema:
+            type: object
+            required:
+              - account
+              - providerId
+              - originalProviderTransactionId
+              - providerTransactionId
+            properties:
+              account:
+                type: string
+                example: '132'
+              providerId:
+                type: integer
+                example: 132
+              originalProviderTransactionId:
+                type: string
+                example: '132'
+              providerTransactionId:
+                type: string
+                example: '133'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - status
+              - response
+            properties:
+              status:
+                type: integer
+                example: 200
+              response:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: '#/definitions/Transaction'
+        '404':
+          description: Unknown rollback transaction
+          schema:
+            $ref: '#/definitions/UnknownRollbackError'
+        '409':
+          description: Duplicate transaction
+          schema:
+            $ref: '#/definitions/DuplicateError'
+        '422':
+          description: Invalid parameters supplied
+          schema:
+            $ref: '#/definitions/ValidationError'
+  /histories/transaction:
+    get:
+      tags:
+        - Endpoints
+      summary: Get Histories Transactions
+      description: 'Get Histories transactions'
+      operationId: get-histories-transaction
+      consumes:
+        - application/json
+      parameters:
+        - name: account
+          in: query
+          description: 'the player account'
+          required: false
+          type: string
+        - name: type
+          in: query
+          description: 'the transaction type'
+          required: false
+          type: string
+        - name: providerId
+          in: query
+          description: 'The provider id'
+          required: false
+          type: integer
+        - name: providerTransactionId
+          in: query
+          description: 'The provider transaction id'
+          required: false
+          type: string
+        - name: roundId
+          in: query
+          description: 'The round id'
+          required: false
+          type: string
+        - name: startDate
+          in: query
+          description: 'The start date'
+          required: false
+          type: string
+        - name: endDate
+          in: query
+          description: 'The start date'
+          required: false
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            type: object
+            required:
+              - status
+              - response
+            properties:
+              status:
+                type: integer
+                example: 200
+              response:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/definitions/HistoriesTransaction'
+        '422':
+          description: Invalid parameters supplied
+          schema:
+            $ref: '#/definitions/ValidationError'
+
+definitions:
+  Model:
+    type: object
+    required:
+      - type
+    properties:
+      type:
+        type: string
+        description: Name of the model type (plural)
+  Balance:
+    allOf:
+      - $ref: '#/definitions/Model'
+      - type: object
+        title: Balance
+        properties:
+          type:
+            type: string
+            enum: [ 'balance' ]
+            example: 'balance'
+          attributes:
+            type: object
+            required:
+              - account
+              - amount
+              - currency
+            properties:
+              account:
+                type: string
+                example: '1231456'
+              amount:
+                type: number
+                example: 965.45
+              currency:
+                type: string
+                example: 'USD'
+  Figure:
+    allOf:
+      - $ref: '#/definitions/Model'
+      - type: object
+        title: Figure
+        properties:
+          type:
+            type: string
+            enum: [ 'figure' ]
+            example: 'figure'
+          attributes:
+            type: object
+            required:
+              - account
+              - startDate
+              - endDate
+              - loseAmount
+              - winAmount
+              - currency
+            properties:
+              account:
+                type: string
+                example: '1231456'
+              startDate:
+                type: string
+                example: '2018-01-01 18:05:05'
+              endDate:
+                type: string
+                example: '2018-02-01 18:05:05'
+              loseAmount:
+                type: number
+                example: 965.45
+              winAmount:
+                type: number
+                example: 965.45
+              currency:
+                type: string
+                example: 'USD'
+  Transaction:
+    allOf:
+      - $ref: '#/definitions/Model'
+      - type: object
+        title: Transaction
+        properties:
+          type:
+            type: string
+            enum: [ 'transaction' ]
+            example: 'transaction'
+          id:
+            type: string
+            example: '1'
+          attributes:
+            type: object
+            required:
+              - type
+              - account
+              - amount
+              - previousBalance
+              - currentBalance
+              - currency
+            properties:
+              type:
+                type: string
+                example: 'bet'
+              account:
+                type: string
+                example: '1231456'
+              amount:
+                type: number
+                example: 10.05
+              previousBalance:
+                type: number
+                example: 955.40
+              currentBalance:
+                type: number
+                example: 965.45
+              currency:
+                type: string
+                example: 'USD'
+  Player:
+    allOf:
+      - $ref: '#/definitions/Model'
+      - type: object
+        title: Plater
+        properties:
+          type:
+            type: string
+            enum: [ 'player' ]
+            example: 'player'
+          id:
+            type: string
+            example: '1'
+          attributes:
+            type: object
+            required:
+              - account
+              - title
+              - firstName
+              - lastName
+              - country
+              - brand
+              - brandId
+              - balance
+              - enable
+              - test
+            properties:
+              account:
+                type: string
+                example: '1231456'
+              title:
+                type: string
+                example: 'Ms'
+              firstName:
+                type: string
+                example: 'Jane'
+              lastName:
+                type: string
+                example: 'Doe'
+              country:
+                type: string
+                example: 'USA'
+              brand:
+                type: string
+                example: 'mybookie'
+              brandId:
+                type: integer
+                example: 35
+              balance:
+                type: object
+                properties:
+                  amount:
+                    type: number
+                    format: float
+                    example: 2501.61
+                  currency:
+                    type: string
+                    example: 'USD'
+              enable:
+                type: object
+                properties:
+                  casino:
+                    type: boolean
+                    example: true
+                  cards:
+                    type: boolean
+                    example: true
+                  horses:
+                    type: boolean
+                    example: true
+                  sports:
+                    type: boolean
+                    example: true
+              test:
+                type: boolean
+                example: false
+  PlayerInfo:
+    allOf:
+      - $ref: '#/definitions/Model'
+      - type: object
+        title: Plater
+        properties:
+          type:
+            type: string
+            enum: [ 'player' ]
+            example: 'player'
+          id:
+            type: string
+            example: '1'
+          attributes:
+            type: object
+            required:
+              - account
+              - title
+              - firstName
+              - lastName
+              - country
+              - brand
+              - brandId
+              - enable
+              - test
+              - currency
+            properties:
+              account:
+                type: string
+                example: '1231456'
+              title:
+                type: string
+                example: 'Ms'
+              firstName:
+                type: string
+                example: 'Jane'
+              lastName:
+                type: string
+                example: 'Doe'
+              country:
+                type: string
+                example: 'USA'
+              brand:
+                type: string
+                example: 'mybookie'
+              brandId:
+                type: integer
+                example: 35
+              enable:
+                type: object
+                properties:
+                  casino:
+                    type: boolean
+                    example: true
+                  cards:
+                    type: boolean
+                    example: true
+                  horses:
+                    type: boolean
+                    example: true
+                  sports:
+                    type: boolean
+                    example: true
+              test:
+                type: boolean
+                example: false
+              currency:
+                type: string
+                example: 'USD'
+  HistoriesTransaction:
+    allOf:
+      - $ref: '#/definitions/Model'
+      - type: object
+        title: Plater
+        properties:
+          type:
+            type: string
+            enum: [ 'transaction' ]
+            example: 'transaction'
+          id:
+            type: string
+            example: '1'
+          attributes:
+            type: object
+            required:
+              - id
+              - oldBalance
+              - newBalance
+              - account
+              - providerTransactionId
+              - roundId
+              - amount
+              - type
+              - providerId
+              - providerGameId
+              - createdAt
+            properties:
+              id:
+                type: integer
+                exemple: 1
+              oldBalance:
+                type: number
+                format: float
+                exemple: 120.15
+              newBalance:
+                type: number
+                format: float
+                exemple: 1531.12
+              account:
+                type: string
+                exemple: 'MB4017'
+              providerTransactionId:
+                type: string
+                exemple: '215315FSD751'
+              roundId:
+                type: string
+                exemple: '1351321'
+              amount:
+                type: number
+                format: float
+                exemple: 151.15
+              type:
+                type: string
+                exemple: 'bet'
+              providerId:
+                type: integer
+                exemple: 1
+              providerGameId:
+                type: string
+                exemple: '1531_fds'
+              createdAt:
+                type: string
+                exemple: '2019-01-01 00:00:00'
+  BaseError:
+    description: Generic Api Error
+    type: object
+    required:
+      - status
+      - errors
+    properties:
+      status:
+      errors:
+  ValidationError:
+    allOf:
+      - $ref: '#/definitions/BaseError'
+      - type: object
+        title: ValidationError
+    properties:
+      status:
+        type: integer
+        example: 422
+        description: Response status
+      errors:
+        type: array
+        description: Human readable explanation of the error
+        items:
+          type: string
+          example: An error occured
+  DuplicateError:
+    allOf:
+      - $ref: '#/definitions/BaseError'
+      - type: object
+        title: DuplicateError
+    properties:
+      status:
+        type: integer
+        example: 409
+        description: Response status
+      errors:
+        type: object
+        description: Human readable explanation of the error
+        required:
+          - transactionId
+          - message
+        properties:
+          transactionId:
+            type: string
+            example: '123'
+          message:
+            type: string
+            example: An error occured
+  UnknownRollbackError:
+    allOf:
+      - $ref: '#/definitions/BaseError'
+      - type: object
+        title: UnknownRollbackError
+    properties:
+      status:
+        type: integer
+        example: 409
+        description: Response status
+      errors:
+        type: object
+        description: Human readable explanation of the error
+        required:
+          - transactionId
+          - message
+        properties:
+          transactionId:
+            type: string
+            example: '123'
+          message:
+            type: string
+            example: An error occured
+  InsufficientFundError:
+    allOf:
+      - $ref: '#/definitions/BaseError'
+      - type: object
+        title: InsufficientFundError
+    properties:
+      status:
+        type: integer
+        example: 403
+        description: Response status
+      errors:
+        type: object
+        description: Human readable explanation of the error
+        required:
+          - message
+        properties:
+          message:
+            type: string
+            example: An error occured
+responses:
+  ValidationError:
+    description: Validation Error
+    schema:
+      $ref: '#/definitions/ValidationError'
+  DuplicateError:
+    description: Duplicate Error
+    schema:
+      $ref: '#/definitions/DuplicateError'
+  UnknownRollbackError:
+    description: Unknown Rollback Error
+    schema:
+      $ref: '#/definitions/UnknownRollbackError'
+  InsufficientFundError:
+    description: Duplicate Error
+    schema:
+      $ref: '#/definitions/InsufficientFundError'

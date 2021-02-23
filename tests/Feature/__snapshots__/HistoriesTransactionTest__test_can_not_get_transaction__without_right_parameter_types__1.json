@@ -1,0 +1,12 @@
+{
+  "status": 422,
+  "errors": [
+    "The account must be a string.",
+    "The type must be a string.",
+    "The provider transaction id must be a string.",
+    "The round id must be a string.",
+    "The start date is not a valid date.",
+    "The end date is not a valid date.",
+    "The end date must be a date after or equal to start date."
+  ]
+}

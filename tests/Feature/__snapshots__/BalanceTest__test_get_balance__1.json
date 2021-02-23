@@ -1,0 +1,13 @@
+{
+  "status": 200,
+  "response": {
+    "data": {
+      "type": "balance",
+      "attributes": {
+        "account": "123456",
+        "amount": 2501.67,
+        "currency": "USD"
+      }
+    }
+  }
+}

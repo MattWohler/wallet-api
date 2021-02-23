@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         bootstrap="bootstrap/app.php"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false"
+         beStrictAboutTestsThatDoNotTestAnything="true"
+         beStrictAboutOutputDuringTests="true">
+    <testsuites>
+        <testsuite name="Application Test Suite">
+            <directory suffix="Test.php">./tests</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./app</directory>
+            <exclude>
+                <directory>./build</directory>
+                <directory>./config</directory>
+                <directory>./database</directory>
+                <directory>./public</directory>
+                <directory>./resources</directory>
+                <directory>./routes</directory>
+                <directory>./script</directory>
+                <directory>./storage</directory>
+                <directory>./vendor</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+    <php>
+        <env name="APP_ENV" value="testing"/>
+        <env name="CACHE_DRIVER" value="array"/>
+        <env name="QUEUE_CONNECTION" value="sync"/>
+        <env name="DB_CONNECTION" value="testing"/>
+        <env name="DB_DATABASE" value=":memory:"/>
+        <env name="REPORT_ERRORS" value="false"/>
+        <env name="APM_ACTIVE" value="false"/>
+        <env name="MAIL_DRIVER" value="array"/>
+        <ini name="memory_limit" value="1536M"/>
+    </php>
+</phpunit>

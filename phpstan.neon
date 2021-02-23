@@ -1,0 +1,31 @@
+includes:
+    - ./vendor/webparking/phpstan-lumen/extension.neon
+    - ./vendor/phpstan/phpstan-strict-rules/rules.neon
+parameters:
+    ignoreErrors:
+        - '/^Cannot access offset .+auth.+ on Illuminate\\Contracts\\Foundation\\Application./' # AuthServiceProvider
+        - '/^Cannot access offset .+config.+ on Illuminate\\Contracts\\Foundation\\Application./' # ProviderManager
+        - '/^Undefined variable: \$factory$/' # definitions undefined variable
+        - '/^Function newrelic_name_transaction not found.$/' # PHP extension
+        - '/^Function newrelic_notice_error not found.$/' # PHP extension
+        - '/^Function newrelic_name_transaction not found.$/' # PHP extension
+        - '/^Construct empty\(\) is not allowed. Use more strict comparison.$/' # empty
+        - '/.* class Illuminate\\Foundation\\Application.$/' # app make|config
+        - '/.* but returns .*Illuminate\\Database\\Eloquent\\Model.*/' # eloquent
+        - '/^Dynamic call to static method .*::first\(\).*/' # eloquent::first()
+        - '/^Method .*Controller::.+\(\) has no return typehint specified.$/' # no type hint in controllers
+        - '/.* Illuminate\\Contracts\\Container\\Container::call\(\).*/' # various using of container call
+        - '/^ Cannot access offset \d on object|string.$/' # ignore route offset in middleware
+        - '/^Method App\\Exceptions\\Handler::.*\(\) .* typehint specified.$/' # ignore typehint in handler
+        - '/^Method App\\Models\\Repositories\\.*::.*\(\) .* returns object|null.$/' #
+        - '/^.* method_exists\(\) with .*AbstractTransformer.*attributes.*$/' #
+    reportUnmatchedIgnoredErrors: false
+    excludes_analyse:
+        - %rootDir%/../../../build/*
+        - %rootDir%/../../../tests/*
+        - %rootDir%/../../../storage/*
+        - %rootDir%/../../../database/migrations/*
+        - %rootDir%/../../../routes/*
+        - %rootDir%/../../../resources/*
+        - %rootDir%/../../../vendor/*
+        - %rootDir%/../../../.phpstorm.meta.php
